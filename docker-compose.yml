@@ -1,25 +1,38 @@
-version: '3'
+version: '3.8'
+
 services:
-  mysql57:
+  # Serviço de Banco de Dados (MySQL)
+  db:
     image: mysql:8.0.29
     restart: unless-stopped
-    container_name: db
+    container_name: db_mercado
     ports:
-      - "127.0.0.1:3306:3306"
+      - "3307:3306" # Acessível na sua máquina pela 3307 para evitar conflitos
     environment:
-      MYSQL_ROOT_USER: root
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: market_management
     volumes:
       - .db:/var/lib/mysql
+
+  # Serviço da API (Flask + Peewee)
   web:
     build:
-      context: . 
+      context: .
       dockerfile: Dockerfile
+    container_name: flask_app
+    depends_on:
+      - db
     ports:
       - "5000:5000"
     volumes:
-      - .:/src
+      - .:/app
     environment:
-      FLASK_APP: run.py
-      FLASK_ENV: development
+      # Variáveis que o Peewee vai ler via os.getenv
+      - DB_HOST=db
+      - DB_NAME=market_management
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - FLASK_APP=run.py
+      - FLASK_ENV=development
+    # Sobrescreve o comando caso o Dockerfile esteja apontando para o lugar errado
+    command: python run.py
