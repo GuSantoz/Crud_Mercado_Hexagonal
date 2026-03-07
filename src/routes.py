@@ -1,16 +1,12 @@
-from src.Application.Controllers.user_controller import UserController
-from flask import jsonify, make_response
+from flask import Flask, request
+from src.Application.Controllers.seller_controller import get_all_sellers_controller, create_seller_controller
 
-def init_routes(app):    
-    @app.route('/api', methods=['GET'])
-    def health():
-        return make_response(jsonify({
-            "mensagem": "API - OK; Docker - Up",
-        }), 200)
-    
-    @app.route('/user', methods=['POST'])
-    def register_user():
-        return UserController.register_user()
-    
-    
+app = Flask(__name__)
 
+@app.route('/sellers', methods=['GET'])
+def list_sellers():
+    return get_all_sellers_controller()
+
+@app.route('/sellers', methods=['POST'])
+def create_sellers():
+    return create_seller_controller()

@@ -1,13 +1,13 @@
-FROM python:3.8-slim
-WORKDIR /src
-COPY requirements.txt requirements.txt
+FROM python:3.9-slim
 
+WORKDIR /app
+
+# Instala dependências do sistema necessárias para drivers de banco
+RUN apt-get update && apt-get install -y default-libmysqlclient-dev build-essential
+
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . /src
+COPY . .
 
-EXPOSE 5000
-
-ENV FLASK_RUN_HOST=0.0.0.0
-
-CMD ["flask", "run"]
+CMD ["python", "run.py"]

@@ -3,11 +3,13 @@ from src.Application.Service.user_service import UserService
 
 class UserController:
     @staticmethod
-    def register_user():
+    def register_user(): #Nome, CNPJ, E-mail, Celular, Senha, Status(Padrão: Inativo)
         data = request.get_json()
         name = data.get('name')
+        cnpj = data.get('cnpj')
         email = data.get('email')
         password = data.get('password')
+        status = False
 
         if not name or not email or not password:
             return make_response(jsonify({"erro": "Missing required fields"}), 400)
