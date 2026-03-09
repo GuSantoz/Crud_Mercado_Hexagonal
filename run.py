@@ -1,6 +1,7 @@
 import time
 from src.routes import app
 from src.Infrastructure.Model.seller_model import db, SellerModel
+from src.Infrastructure.Model.user import User
 
 def connect_with_retry():
     # Tenta conectar 10 vezes com intervalo de 3 segundos
@@ -10,7 +11,7 @@ def connect_with_retry():
             print(f"Tentando conectar ao MySQL... ({11 - retries}/10)")
             db.connect()
             # Se conectou, cria as tabelas
-            db.create_tables([SellerModel])
+            db.create_tables([SellerModel, User])
             print("Conectado com sucesso e tabelas verificadas!")
             return True
         except Exception as e:
