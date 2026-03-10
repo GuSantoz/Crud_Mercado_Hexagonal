@@ -21,6 +21,6 @@ class User(Model):
             "email": self.email,
             "password": self.password,
             "phone": self.phone,
-            "status": self.status,
-            "activation_code": self.activation_code
+            "status": self.status
+            # "activation_code": self.activation_code  # Removido por segurança
         }

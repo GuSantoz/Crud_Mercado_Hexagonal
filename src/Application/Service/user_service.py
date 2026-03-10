@@ -14,3 +14,13 @@ class UserService:
             whats_app_service.send_activation_message(phone, activation_code)
         
         return UserDomain(user.id, user.name, user.email, user.password, user.phone, user.status, user.activation_code)
+
+    @staticmethod
+    def activate_user(email, activation_code):
+        try:
+            user = User.get((User.email == email) & (User.activation_code == activation_code))
+            user.status = True
+            user.save()
+            return True
+        except User.DoesNotExist:
+            return False
