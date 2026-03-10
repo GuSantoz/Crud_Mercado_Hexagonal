@@ -2,3 +2,5 @@ flask
 peewee
 pymysql
 cryptography
+twilio
+python-dotenv

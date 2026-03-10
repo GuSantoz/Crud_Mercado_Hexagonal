@@ -1,15 +1,26 @@
-from src.config.data_base import db 
-class User(db.Model):
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+from peewee import Model, CharField, AutoField, IntegerField, BooleanField
+from src.Infrastructure.Model.seller_model import db
+
+class User(Model):
+    id = AutoField()
+    name = CharField(null=False)
+    email = CharField(unique=True, null=False)
+    password = CharField(null=False)
+    phone = CharField(null=True)
+    status = BooleanField(default=False)
+    activation_code = CharField(null=True)
+
+    class Meta:
+        database = db
+        table_name = 'users'
 
     def to_dict(self):
         return {
             "id": self.id,
             "name": self.name,
             "email": self.email,
-            "password": self.password
+            "password": self.password,
+            "phone": self.phone,
+            "status": self.status
+            # "activation_code": self.activation_code  # Removido por segurança
         }
