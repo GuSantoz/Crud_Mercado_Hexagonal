@@ -1,5 +1,6 @@
 from flask import request, jsonify, make_response
 from src.Application.Service.product_service import ProductService
+from src.Application.Service.user_service import UserService
 
 
 class ProductController:
@@ -37,11 +38,27 @@ class ProductController:
             }), 201
         )
     
+    @staticmethod
     def update_product():
+        token = request.headers.get('Authorization')
         data = request.get_json()
+
+        if not token:
+            return make_response(jsonify({"erro": "Token não fornecido"}), 401)
+
+        if not data:
+            return make_response(jsonify({"erro": "Dados para atualização não fornecidos"}), 400)
+
+        token_validation = UserService.validate_token(token)
+        if not token_validation["success"]:
+            return make_response(jsonify({"erro": token_validation["message"]}), 401)
+
         product_id = data.get('id')
+        if not product_id:
+            return make_response(jsonify({"erro": "ID do produto não fornecido"}), 400)
+
         result = ProductService.update_product(product_id, data)
-        
+
         if result["success"]:
                 return make_response(jsonify({"mensagem": result["message"]}), 200)
         else:

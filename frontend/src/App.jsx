@@ -4,12 +4,15 @@ import CadastroUsuario from './components/CadastroUsuario';
 import ValidacaoCodigo from './components/ValidacaoCodigo';
 import Login from './components/Login';
 import EditarPerfil from './components/EditarPerfil';
+import CadastroProduto from './components/CadastroProduto';
+import ListarProdutos from './components/ListarProdutos';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [authTab, setAuthTab] = useState('login');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [nomeUsuario, setNomeUsuario] = useState('');
+  const [dashboardTab, setDashboardTab] = useState('perfil');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -46,7 +49,58 @@ function App() {
             </button>
           </div>
           
-          <EditarPerfil onUpdateSuccess={(novoNome) => setNomeUsuario(novoNome)} />
+          <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', borderBottom: '2px solid #ddd' }}>
+            <button 
+              onClick={() => setDashboardTab('perfil')}
+              style={{
+                padding: '12px 20px',
+                backgroundColor: dashboardTab === 'perfil' ? '#007bff' : '#f0f0f0',
+                color: dashboardTab === 'perfil' ? '#fff' : '#000',
+                border: 'none',
+                borderRadius: '5px 5px 0 0',
+                cursor: 'pointer',
+                fontWeight: 'bold'
+              }}
+            >
+              📝 Editar Perfil
+            </button>
+            <button 
+              onClick={() => setDashboardTab('produto')}
+              style={{
+                padding: '12px 20px',
+                backgroundColor: dashboardTab === 'produto' ? '#007bff' : '#f0f0f0',
+                color: dashboardTab === 'produto' ? '#fff' : '#000',
+                border: 'none',
+                borderRadius: '5px 5px 0 0',
+                cursor: 'pointer',
+                fontWeight: 'bold'
+              }}
+            >
+              📦 Cadastrar Produto
+            </button>
+            <button 
+              onClick={() => setDashboardTab('listar')}
+              style={{
+                padding: '12px 20px',
+                backgroundColor: dashboardTab === 'listar' ? '#007bff' : '#f0f0f0',
+                color: dashboardTab === 'listar' ? '#fff' : '#000',
+                border: 'none',
+                borderRadius: '5px 5px 0 0',
+                cursor: 'pointer',
+                fontWeight: 'bold'
+              }}
+            >
+              👁️ Ver Produtos
+            </button>
+          </div>
+
+          {dashboardTab === 'perfil' ? (
+            <EditarPerfil onUpdateSuccess={(novoNome) => setNomeUsuario(novoNome)} />
+          ) : dashboardTab === 'produto' ? (
+            <CadastroProduto onCadastroSuccess={() => alert('Produto cadastrado com sucesso!')} />
+          ) : (
+            <ListarProdutos />
+          )}
         </div>
       ) : (
         <div className="auth-layout">
