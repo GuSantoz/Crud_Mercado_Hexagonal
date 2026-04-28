@@ -3,7 +3,6 @@ from src.Application.Controllers.user_controller import UserController
 from src.Application.Controllers.product_controller import ProductController
 from flask import jsonify, make_response
 
-# ROTAS DE USER
 def init_routes(app):    
     @app.route('/api', methods=['GET'])
     def health():
@@ -31,7 +30,6 @@ def init_routes(app):
     def update_user():
         return UserController.update_user()
     
-#ROTAS DE PRODUTO
     @app.route('/product', methods=['GET'])
     def get_all_products():
         return ProductController.get_all_products()
@@ -43,3 +41,7 @@ def init_routes(app):
     @app.route('/product', methods=['PUT'])
     def update_product():
         return ProductController.update_product()
+    
+    @app.route('/product/status', methods=['PUT'])
+    def update_status_product():
+        return ProductController.update_status_product()

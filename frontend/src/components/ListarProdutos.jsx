@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import EditarProduto from './EditarProduto';
 
 function ListarProdutos() {
   const [produtos, setProdutos] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState('');
+  const [produtoEditado, setProdutoEditado] = useState(null);
 
   useEffect(() => {
     buscarProdutos();
@@ -94,9 +96,32 @@ function ListarProdutos() {
                 borderRadius: '8px',
                 padding: '15px',
                 boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-                backgroundColor: '#fff'
+                backgroundColor: '#fff',
+                position: 'relative'
               }}
             >
+              <button
+                onClick={() => setProdutoEditado(produto)}
+                style={{
+                  position: 'absolute',
+                  top: '12px',
+                  right: '12px',
+                  background: '#007bff',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '50%',
+                  width: '34px',
+                  height: '34px',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+                title="Editar produto"
+              >
+                ✏️
+              </button>
               <img 
                 src={produto.image} 
                 alt={produto.name}
@@ -114,6 +139,9 @@ function ListarProdutos() {
                 R$ {parseFloat(produto.price).toFixed(2)}
               </p>
               <p style={{ margin: '5px 0', fontSize: '14px', color: '#333' }}>
+                <strong>Cod Produto:</strong> {produto.id}
+              </p>
+              <p style={{ margin: '5px 0', fontSize: '14px', color: '#333' }}>
                 <strong>Estoque:</strong> {produto.quantity} unidades
               </p>
               <p style={{ margin: '5px 0', fontSize: '14px', color: '#333' }}>
@@ -121,6 +149,48 @@ function ListarProdutos() {
               </p>
             </div>
           ))}
+        </div>
+      )}
+
+      {produtoEditado && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          backgroundColor: 'rgba(0,0,0,0.65)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1000,
+          padding: '20px'
+        }}>
+          <div style={{ width: '100%', maxWidth: '540px', position: 'relative' }}>
+            <button
+              onClick={() => setProdutoEditado(null)}
+              style={{
+                position: 'absolute',
+                top: '-10px',
+                right: '-10px',
+                background: '#dc3545',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '50%',
+                width: '36px',
+                height: '36px',
+                cursor: 'pointer',
+                fontSize: '18px'
+              }}
+            >
+              ✖
+            </button>
+            <EditarProduto
+              produto={produtoEditado}
+              onCancel={() => setProdutoEditado(null)}
+              onUpdateSuccess={() => {
+                setProdutoEditado(null);
+                buscarProdutos();
+              }}
+            />
+          </div>
         </div>
       )}
     </div>

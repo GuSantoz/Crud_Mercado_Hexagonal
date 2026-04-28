@@ -7,7 +7,7 @@ class Product(db.Model):
     price = db.Column(db.Numeric(10, 2), nullable=False, default=0.00)
     quantity = db.Column(db.Integer, nullable = False)
     status = db.Column(db.Boolean, nullable = False, default=True)
-    image = db.Column(db.String(100), nullable = False)
+    image = db.Column(db.String(500), nullable = False)
 
     def to_dict(self):
         return {

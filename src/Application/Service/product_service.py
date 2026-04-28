@@ -39,6 +39,8 @@ class ProductService:
             product.price = data['price']
         if 'quantity' in data:
             product.quantity = data['quantity']
+            if product.quantity == 0:
+                product.status = False
         if 'status' in data:
             product.status = data['status']
 
