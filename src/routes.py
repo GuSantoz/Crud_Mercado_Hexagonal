@@ -1,7 +1,7 @@
 import os
 from src.Application.Controllers.user_controller import UserController
 from src.Application.Controllers.product_controller import ProductController
-from flask import jsonify, make_response
+from flask import jsonify, make_response, send_from_directory
 
 def init_routes(app):    
     @app.route('/api', methods=['GET'])
@@ -45,3 +45,12 @@ def init_routes(app):
     @app.route('/product/status', methods=['PUT'])
     def update_status_product():
         return ProductController.update_status_product()
+    
+    @app.route('/product/<int:product_id>', methods=['DELETE'])
+    def delete_product(product_id):
+        return ProductController.delete_product(product_id)
+    
+    @app.route('/uploads/<filename>')
+    def uploaded_file(filename):
+        uploads_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'uploads')
+        return send_from_directory(uploads_dir, filename)

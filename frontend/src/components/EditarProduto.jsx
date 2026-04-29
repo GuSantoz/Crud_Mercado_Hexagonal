@@ -5,16 +5,22 @@ const EditarProduto = ({ produto, onCancel, onUpdateSuccess }) => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [quantity, setQuantity] = useState('');
-  const [image, setImage] = useState('');
+  const [imageFile, setImageFile] = useState(null);
+  const [imagemAtual, setImagemAtual] = useState('');
   const [status, setStatus] = useState(false);
   const [mensagem, setMensagem] = useState('');
+
+  const handleFileChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
 
   useEffect(() => {
     if (produto) {
       setName(produto.name || '');
       setPrice(produto.price != null ? produto.price : '');
       setQuantity(produto.quantity != null ? produto.quantity : '');
-      setImage(produto.image || '');
+      setImagemAtual(produto.image || '');
+      setImageFile(null);
       setStatus(!!produto.status);
       setMensagem('');
     }
@@ -34,23 +40,27 @@ const EditarProduto = ({ produto, onCancel, onUpdateSuccess }) => {
       return;
     }
 
-    const data = {
-      id: produto.id,
-      name,
-      price,
-      quantity,
-      image,
-      status,
-    };
+    const formData = new FormData();
+    formData.append('id', produto.id);
+    formData.append('name', name);
+    formData.append('price', price);
+    formData.append('quantity', quantity);
+    formData.append('status', status);
+    
+    // Se um novo arquivo foi selecionado, envia o arquivo; caso contrário, envia o nome da imagem atual
+    if (imageFile) {
+      formData.append('image', imageFile);
+    } else {
+      formData.append('image', imagemAtual);
+    }
 
     try {
       const response = await fetch('http://localhost:5000/product', {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(data),
+        body: formData,
       });
 
       const result = await response.json();
@@ -115,11 +125,34 @@ const EditarProduto = ({ produto, onCancel, onUpdateSuccess }) => {
         </div>
 
         <div className="form-group">
-          <label>URL da Imagem:</label>
+          <label>Imagem:</label>
+          {imagemAtual && !imageFile && (
+            <div style={{ marginBottom: '10px' }}>
+              <p style={{ fontSize: '12px', color: '#999', margin: '0 0 8px 0' }}>Imagem atual:</p>
+              <img
+                src={`http://localhost:5000/uploads/${imagemAtual}`}
+                alt="Preview"
+                style={{
+                  maxWidth: '150px',
+                  maxHeight: '150px',
+                  borderRadius: '4px',
+                  objectFit: 'cover',
+                  border: '1px solid #ddd',
+                  padding: '4px'
+                }}
+                onError={(e) => { e.target.style.display = 'none'; }}
+              />
+            </div>
+          )}
+          {imageFile && (
+            <div style={{ marginBottom: '10px' }}>
+              <p style={{ fontSize: '12px', color: '#28a745', margin: '0 0 8px 0' }}>✓ Nova imagem selecionada: {imageFile.name}</p>
+            </div>
+          )}
           <input
-            type="url"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
             className="dark-input"
           />
         </div>

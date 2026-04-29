@@ -50,3 +50,17 @@ class ProductService:
         except Exception as e:
             db.session.rollback()
             return {"success": False, "message": f"Erro ao atualizar o banco de dados: {str(e)}"}
+    
+    @staticmethod
+    def delete_product(product_id):
+        product = db.session.query(Product).filter(Product.id == product_id).first()
+        if not product:
+            return {"success": False, "message": "Produto não encontrado!"}
+        
+        try:
+            db.session.delete(product)
+            db.session.commit()
+            return {"success": True, "message": "Produto deletado com sucesso."}
+        except Exception as e:
+            db.session.rollback()
+            return {"success": False, "message": f"Erro ao deletar o produto: {str(e)}"}

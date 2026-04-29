@@ -4,26 +4,26 @@ function CadastroProduto({ onCadastroSuccess }) {
   const [name, setName] = useState('')
   const [price, setPrice] = useState('');
   const [quantity, setQuantity] = useState('');
-  const [image, setImage] = useState('');
+  const [imageFile, setImageFile] = useState(null);
   const [mensagem, setMensagem] = useState('');
+
+  const handleFileChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const dadosProduto = {
-      name: name,
-      price: price,
-      quantity: quantity,
-      image: image
-    };
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('price', price);
+    formData.append('quantity', quantity);
+    formData.append('image', imageFile);
 
     try {
       const resposta = await fetch('http://localhost:5000/product', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dadosProduto),
+        body: formData,
       });
 
       const dados = await resposta.json();
@@ -35,7 +35,7 @@ function CadastroProduto({ onCadastroSuccess }) {
         setName('');
         setPrice('');
         setQuantity('');
-        setImage('');
+        setImageFile(null);
       } else {
         setMensagem(dados.erro || 'Falha ao cadastrar o produto.');
       }
@@ -88,11 +88,11 @@ function CadastroProduto({ onCadastroSuccess }) {
         </div>
 
         <div className="form-group">
-          <label>URL da Imagem:</label>
+          <label>Imagem:</label>
           <input
-            type="url"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
             required
             className="dark-input"
           />
