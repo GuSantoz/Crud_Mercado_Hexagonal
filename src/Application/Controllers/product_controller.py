@@ -30,7 +30,7 @@ class ProductController:
             if image_file:
                 filename = secure_filename(image_file.filename)
                 # Use absolute path from the app root
-                base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+                base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
                 uploads_dir = os.path.join(base_dir, 'uploads')
                 os.makedirs(uploads_dir, exist_ok=True)
                 image_path = os.path.join(uploads_dir, filename)
@@ -85,7 +85,7 @@ class ProductController:
             image_file = request.files.get('image')
             if image_file:
                 filename = secure_filename(image_file.filename)
-                base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+                base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
                 uploads_dir = os.path.join(base_dir, 'uploads')
                 os.makedirs(uploads_dir, exist_ok=True)
                 image_path = os.path.join(uploads_dir, filename)
