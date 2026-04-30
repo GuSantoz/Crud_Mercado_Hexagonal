@@ -23,8 +23,13 @@ function CadastroProduto({ onCadastroSuccess }) {
     try {
       const resposta = await fetch('http://localhost:5000/product', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
         body: formData,
       });
+      // aaaa
 
       const dados = await resposta.json();
 
