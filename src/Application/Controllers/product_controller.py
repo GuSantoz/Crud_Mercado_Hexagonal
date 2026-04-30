@@ -26,6 +26,16 @@ class ProductController:
     
     @staticmethod
     def create_product():
+        token = request.headers.get('Authorization')
+        if not token:
+            return make_response(jsonify({"erro": "Token não fornecido"}), 401)
+        
+        token_validation = UserService.validate_token(token)
+        if not token_validation["success"]:
+            return make_response(jsonify({"erro": token_validation["message"]}), 401)
+        
+        userId = token_validation["userId"]
+
         data = request.get_json()
         
         name = data.get('name')
@@ -36,7 +46,7 @@ class ProductController:
         if not name or not price or not quantity or not image:
             return make_response(jsonify({"erro": "Missing required fields"}), 400)
  
-        product = ProductService.create_product(name, price, quantity, image)
+        product = ProductService.create_product(name, price, quantity, image, userId)
  
         if not product["success"]:
             return make_response(jsonify({"erro": product["message"]}), 400)
