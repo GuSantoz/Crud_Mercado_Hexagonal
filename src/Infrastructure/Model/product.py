@@ -9,6 +9,8 @@ class Product(db.Model):
     status = db.Column(db.Boolean, nullable = False, default=True)
     image = db.Column(db.String(500), nullable = False)
 
+    userId = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
     def to_dict(self):
         return {
             "id": self.id,

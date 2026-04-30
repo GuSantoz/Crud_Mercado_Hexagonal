@@ -6,7 +6,19 @@ from src.Application.Service.user_service import UserService
 class ProductController:
     @staticmethod
     def get_all_products():
-        products = ProductService.get_all_products()
+        token = request.headers.get('Authorization') #TODO: TESTAR
+        if not token:
+            return make_response(jsonify({"erro": "Token não fornecido"}), 401)
+        
+        token_validation = UserService.validate_token(token)
+        if not token_validation["success"]:
+            return make_response(jsonify({"erro": token_validation["message"]}), 401) 
+        
+        userId = token_validation["userId"]
+        
+        # 3. Busca só os produtos dele
+        products = ProductService.get_all_products(userId)
+
         return make_response(jsonify({
             "mensagem": "Produtos encontrados com sucesso",
             "usuarios": [product.to_dict() for product in products]

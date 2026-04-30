@@ -3,22 +3,22 @@ from src.Infrastructure.Model.product import Product
 from src.config.data_base import db
 
 class ProductService:
-    def get_all_products():
-        products = db.session.query(Product).all()
-        return [ProductDomain(product.id, product.name, product.price, product.quantity, product.status, product.image)for product in products]
+    def get_all_products(userId):
+        products = db.session.query(Product).filter(Product.userId == userId).all()
+        return [ProductDomain(product.id, product.name, product.price, product.quantity, product.status, product.image, product.userId)for product in products]
     
     @staticmethod
-    def create_product(name, price, quantity, image):
-        if db.session.query(Product).filter(Product.name == name).first():
+    def create_product(name, price, quantity, image, userId):
+        if db.session.query(Product).filter(Product.name == name, Product.userId == userId).first():
             return {"success": False, "message": "Já há um produto cadastrado com esse nome!"}
         
-        product = Product(name=name, price=price, quantity=quantity, image=image)
+        product = Product(name=name, price=price, quantity=quantity, image=image, userId=userId)
         db.session.add(product)
         db.session.commit()
  
         product = ProductDomain(
             product.id, product.name, product.price, 
-            product.quantity, product.status, product.image
+            product.quantity, product.status, product.image, product.userId
         )
 
         return {
