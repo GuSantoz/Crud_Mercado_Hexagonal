@@ -14,12 +14,23 @@ function ListarProdutos() {
   const buscarProdutos = async () => {
     setCarregando(true);
     setErro('');
+
+    console.log("O React está lendo o token?:", localStorage.getItem('token'));
     
+    // try {
+    //   const resposta = await fetch('http://localhost:5000/product', {
+    //     method: 'GET',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     }
+    //   });
+
     try {
       const resposta = await fetch('http://localhost:5000/product', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
 

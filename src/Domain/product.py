@@ -1,12 +1,12 @@
 class ProductDomain:
-    def __init__(self, id, name, price, quantity, status, image, userId):
+    def __init__(self, id, name, price, quantity, status, image, user_id):
         self.id = id
         self.name = name
         self.price = price
         self.quantity = quantity
         self.status = status
         self.image = image
-        self.userId = userId
+        self.user_id = user_id
         
         
 
@@ -18,5 +18,5 @@ class ProductDomain:
             "quantity": self.quantity,
             "status": self.status,
             "image": self.image,
-            "userid": self.userId
+            "user_id": self.user_id
         }

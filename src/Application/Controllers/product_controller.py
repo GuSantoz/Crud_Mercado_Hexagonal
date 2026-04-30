@@ -14,10 +14,10 @@ class ProductController:
         if not token_validation["success"]:
             return make_response(jsonify({"erro": token_validation["message"]}), 401) 
         
-        userId = token_validation["userId"]
+        user_id = token_validation["user_id"]
         
         # 3. Busca só os produtos dele
-        products = ProductService.get_all_products(userId)
+        products = ProductService.get_all_products(user_id)
 
         return make_response(jsonify({
             "mensagem": "Produtos encontrados com sucesso",
@@ -34,7 +34,7 @@ class ProductController:
         if not token_validation["success"]:
             return make_response(jsonify({"erro": token_validation["message"]}), 401)
         
-        userId = token_validation["userId"]
+        user_id = token_validation["user_id"]
 
         data = request.get_json()
         
@@ -46,7 +46,7 @@ class ProductController:
         if not name or not price or not quantity or not image:
             return make_response(jsonify({"erro": "Missing required fields"}), 400)
  
-        product = ProductService.create_product(name, price, quantity, image, userId)
+        product = ProductService.create_product(name, price, quantity, image, user_id)
  
         if not product["success"]:
             return make_response(jsonify({"erro": product["message"]}), 400)

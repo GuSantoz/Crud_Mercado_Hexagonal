@@ -9,7 +9,7 @@ class Product(db.Model):
     status = db.Column(db.Boolean, nullable = False, default=True)
     image = db.Column(db.String(500), nullable = False)
 
-    userId = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     def to_dict(self):
         return {
@@ -19,5 +19,5 @@ class Product(db.Model):
             "quantity": self.quantity,
             "status": self.status,
             "image": self.image,
-            "userId": self.userId
+            "user_id": self.user_id
         }
