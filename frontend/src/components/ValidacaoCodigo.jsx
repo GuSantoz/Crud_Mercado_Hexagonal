@@ -31,8 +31,10 @@ function ValidacaoCodigo({ onValidationSuccess }) {
 
       if (resposta.ok) {
         setMensagem('Código validado com sucesso! Conta ativada.');
-        localStorage.removeItem('cnpjAtivacao'); 
-        if (onValidationSuccess) onValidationSuccess();
+        setTimeout(() => {
+          localStorage.removeItem('cnpjAtivacao'); 
+          if (onValidationSuccess) onValidationSuccess();
+        }, 3000);
       } else {
         setMensagem(`Erro: ${dados.erro || 'Código inválido. Tente novamente.'}`);
       }

@@ -29,6 +29,32 @@ class ProductService:
             "produto": product
         }
     
+    # def update_product(product_id, data):
+    #     product = db.session.query(Product).filter(Product.id == product_id).first()
+    #     if not product:
+    #         return {"success": False, "message": "Produto não encontrado!"}
+        
+    #     if 'name' in data:
+    #         product.name = data['name']
+    #     if 'image' in data:
+    #         product.image = data['image']
+    #     if 'price' in data:
+    #         product.price = data['price']
+    #     if 'quantity' in data:
+    #         product.quantity = data['quantity']
+    #         if product.quantity == 0:
+    #             product.status = False
+    #     if 'status' in data:
+    #         product.status = data['status']
+
+    #     try:
+    #         db.session.commit()
+    #         return {"success": True, "message": "Informações do produto atualizadas com sucesso."}
+    #     except Exception as e:
+    #         db.session.rollback()
+    #         return {"success": False, "message": f"Erro ao atualizar o banco de dados: {str(e)}"}
+    
+    @staticmethod
     def update_product(product_id, data):
         product = db.session.query(Product).filter(Product.id == product_id).first()
         if not product:
@@ -40,12 +66,21 @@ class ProductService:
             product.image = data['image']
         if 'price' in data:
             product.price = data['price']
-        if 'quantity' in data:
-            product.quantity = data['quantity']
-            if product.quantity == 0:
-                product.status = False
+            
+        # 1. PRIMEIRO: Atualiza o status caso o front-end tenha enviado (ex: botão de inativar manualmente)
         if 'status' in data:
             product.status = data['status']
+
+        # 2. POR ÚLTIMO: Aplica a regra matemática do estoque. 
+        # Isso garante que se houver alteração de quantidade, essa regra tem prioridade máxima!
+        if 'quantity' in data:
+            nova_quantidade = int(data['quantity'])
+            product.quantity = nova_quantidade
+            
+            if nova_quantidade <= 0:
+                product.status = False
+            else:
+                product.status = True
 
         try:
             db.session.commit()
@@ -53,7 +88,7 @@ class ProductService:
         except Exception as e:
             db.session.rollback()
             return {"success": False, "message": f"Erro ao atualizar o banco de dados: {str(e)}"}
-    
+
     @staticmethod
     def create_venda(user_id, product_id, quantity):
         try:
