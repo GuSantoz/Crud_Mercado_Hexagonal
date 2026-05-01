@@ -86,7 +86,7 @@ function Vendas() {
       const dados = await resposta.json();
 
       if (resposta.ok) {
-        alert(dados.mensagem);
+        alert(dados.message);
         setProdutoSelecionado('');
         setQuantidade('');
         buscarProdutos();

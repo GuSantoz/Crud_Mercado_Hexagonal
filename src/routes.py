@@ -1,4 +1,5 @@
 import os
+from src.Application.Controllers.sale_controller import SaleController
 from src.Application.Controllers.user_controller import UserController
 from src.Application.Controllers.product_controller import ProductController
 from flask import jsonify, make_response
@@ -47,8 +48,8 @@ def init_routes(app):
         return ProductController.update_status_product()
     @app.route('/venda', methods=['POST'])
     def create_venda():
-        return ProductController.create_venda()
+        return SaleController.create_venda()
     
     @app.route('/venda', methods=['GET'])
     def get_all_vendas():
-        return ProductController.get_all_vendas()
+        return SaleController.get_all_vendas()

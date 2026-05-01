@@ -1,0 +1,79 @@
+from src.Infrastructure.Model.sale import Sale
+from src.Infrastructure.Model.product import Product
+from src.Domain.sale import SaleDomain
+from src.config.data_base import db
+
+class SaleService:
+
+    @staticmethod
+    def create_venda(user_id, product_id, quantity):
+        try:
+            # Busca o produto
+            product = db.session.query(Product).filter(Product.id == product_id, Product.user_id == user_id).first()
+            
+            if not product:
+                return {"success": False, "message": "Produto não encontrado!"}
+            
+            # Verifica se tem quantidade suficiente
+            if product.quantity < quantity:
+                return {"success": False, "message": f"Quantidade insuficiente! Disponível: {product.quantity}"}
+            
+            # Calcula o preço total
+            total_price = float(product.price) * quantity
+            
+            # Cria a venda
+            sale = Sale(
+                product_id=product.id,
+                product_name=product.name,
+                quantity=quantity,
+                price=product.price,
+                total_price=total_price,
+                user_id=user_id
+            )
+            
+            # Reduz a quantidade do produto
+            product.quantity -= quantity
+            if product.quantity <= 0:
+                product.status = False
+            
+            db.session.add(sale)
+            db.session.commit()
+            
+            # Retorna os dados da venda com o produto e quantidade
+            sale_domain = SaleDomain(
+                sale.id,
+                sale.product_id,
+                sale.product_name,
+                sale.quantity,
+                sale.price,
+                sale.total_price,
+                sale.user_id,
+                sale.created_at
+            )
+            
+            return {
+                "success": True,
+                "message": f"Venda realizada com sucesso! Produto: {product.name}, Quantidade: {quantity}",
+                "venda": sale_domain
+            }
+        
+        except Exception as e:
+            db.session.rollback()
+            return {"success": False, "message": f"Erro ao registrar venda: {str(e)}"}
+    
+    @staticmethod
+    def get_all_vendas(user_id):
+        try:
+            sales = db.session.query(Sale).filter(Sale.user_id == user_id).all()
+            return [SaleDomain(
+                sale.id,
+                sale.product_id,
+                sale.product_name,
+                sale.quantity,
+                sale.price,
+                sale.total_price,
+                sale.user_id,
+                sale.created_at
+            ) for sale in sales]
+        except Exception as e:
+            return {"success": False, "message": f"Erro ao buscar vendas: {str(e)}"}
