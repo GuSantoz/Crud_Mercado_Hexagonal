@@ -45,3 +45,10 @@ def init_routes(app):
     @app.route('/product/status', methods=['PUT'])
     def update_status_product():
         return ProductController.update_status_product()
+    @app.route('/venda', methods=['POST'])
+    def create_venda():
+        return ProductController.create_venda()
+    
+    @app.route('/venda', methods=['GET'])
+    def get_all_vendas():
+        return ProductController.get_all_vendas()

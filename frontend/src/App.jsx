@@ -6,6 +6,7 @@ import Login from './components/Login';
 import EditarPerfil from './components/EditarPerfil';
 import CadastroProduto from './components/CadastroProduto';
 import ListarProdutos from './components/ListarProdutos';
+import Vendas from './components/Vendas';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -92,15 +93,31 @@ function App() {
             >
               👁️ Ver Produtos
             </button>
+            <button 
+              onClick={() => setDashboardTab('vendas')}
+              style={{
+                padding: '12px 20px',
+                backgroundColor: dashboardTab === 'vendas' ? '#007bff' : '#f0f0f0',
+                color: dashboardTab === 'vendas' ? '#fff' : '#000',
+                border: 'none',
+                borderRadius: '5px 5px 0 0',
+                cursor: 'pointer',
+                fontWeight: 'bold'
+              }}
+            >
+              🛒 Vendas
+            </button>
           </div>
 
           {dashboardTab === 'perfil' ? (
             <EditarPerfil onUpdateSuccess={(novoNome) => setNomeUsuario(novoNome)} />
           ) : dashboardTab === 'produto' ? (
             <CadastroProduto onCadastroSuccess={() => alert('Produto cadastrado com sucesso!')} />
-          ) : (
+          ) : dashboardTab === 'listar' ? (
             <ListarProdutos />
-          )}
+          ) : dashboardTab === 'vendas' ? (
+            <Vendas />
+          ) : null}
         </div>
       ) : (
         <div className="auth-layout">
