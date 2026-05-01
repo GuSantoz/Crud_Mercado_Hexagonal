@@ -6,7 +6,7 @@ from src.Application.Service.user_service import UserService
 class ProductController:
     @staticmethod
     def get_all_products():
-        token = request.headers.get('Authorization') #TODO: TESTAR
+        token = request.headers.get('Authorization')
         if not token:
             return make_response(jsonify({"erro": "Token não fornecido"}), 401)
         
