@@ -16,7 +16,7 @@ class ProductController:
         
         user_id = token_validation["user_id"]
         
-        # 3. Busca só os produtos dele
+        
         products = ProductService.get_all_products(user_id)
 
         return make_response(jsonify({

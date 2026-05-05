@@ -23,8 +23,6 @@ class SaleController:
                 "erro": result["message"]
             }), 500)
 
-        # Se não caiu no IF, significa que 'result' é uma LISTA.
-        # Se a lista estiver vazia [], o map abaixo gera [], e o React não mostra nada (perfeito).
         return make_response(jsonify({
             "mensagem": "Vendas encontradas com sucesso",
             "vendas": [venda.to_dict() for venda in result]

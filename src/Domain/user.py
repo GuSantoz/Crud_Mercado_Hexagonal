@@ -11,7 +11,6 @@ class UserDomain:
         self.status = status
         self.activation_code = activation_code
         
-        
 
     def to_dict(self):
         return {

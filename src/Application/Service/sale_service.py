@@ -14,22 +14,18 @@ class SaleService:
     @staticmethod
     def create_venda(user_id, product_id, quantity):
         try:
-            # Busca o produto
             product = db.session.query(Product).filter(Product.id == product_id, Product.user_id == user_id).first()
             
             if not product:
                 return {"success": False, "message": "Produto não encontrado!"}
             
-            # Verifica se tem quantidade suficiente
             if product.quantity < quantity:
                 return {"success": False, "message": f"Quantidade insuficiente! Disponível: {product.quantity}"}
             
-            # Calcula o preço total
             total_price = float(product.price) * quantity
             
             codigo_pedido = SaleService.generate_order_code()
 
-            # Cria a venda
             sale = Sale(
                 order_number=codigo_pedido,
                 product_id=product.id,
@@ -40,7 +36,6 @@ class SaleService:
                 user_id=user_id
             )
             
-            # Reduz a quantidade do produto
             product.quantity -= quantity
             if product.quantity <= 0:
                 product.status = False
@@ -48,7 +43,6 @@ class SaleService:
             db.session.add(sale)
             db.session.commit()
             
-            # Retorna os dados da venda com o produto e quantidade
             sale_domain = SaleDomain(
                 sale.id,
                 sale.order_number,

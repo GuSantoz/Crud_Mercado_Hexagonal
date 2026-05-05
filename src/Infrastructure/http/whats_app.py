@@ -15,7 +15,6 @@ class WhatsAppService:
     @staticmethod
     def generate_code():
         token_codigo = str(random.randint(1000, 9999))
-        #print(f'Codigo gerado: {token_codigo}')
         return token_codigo
     
     def send_activation_message(self, to_number, code):
