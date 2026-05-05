@@ -225,7 +225,7 @@ function Vendas() {
               }}>
                 <thead>
                   <tr style={{ backgroundColor: '#28a745', color: '#fff' }}>
-                    <th style={{ padding: '10px', textAlign: 'left' }}>ID</th>
+                    <th style={{ padding: '10px', textAlign: 'left' }}>Cód. Pedido</th>
                     <th style={{ padding: '10px', textAlign: 'left' }}>Produto</th>
                     <th style={{ padding: '10px', textAlign: 'center' }}>Quantidade</th>
                     <th style={{ padding: '10px', textAlign: 'right' }}>Preço Unit.</th>
@@ -235,8 +235,8 @@ function Vendas() {
                 </thead>
                 <tbody>
                   {vendas.map((venda) => (
-                    <tr key={venda.id} style={{ borderBottom: '1px solid #ddd', backgroundColor: '#fff' }}>
-                      <td style={{ padding: '10px', color: '#000' }}>#{venda.id}</td>
+                    <tr key={venda.order_number} style={{ borderBottom: '1px solid #ddd', backgroundColor: '#fff' }}>
+                      <td style={{ padding: '10px', color: '#000', fontWeight: 'bold' }}>{venda.order_number || '---'}</td>
                       <td style={{ padding: '10px', color: '#000' }}>{venda.product_name}</td>
                       <td style={{ padding: '10px', textAlign: 'center', color: '#000' }}>{venda.quantity}</td>
                       <td style={{ padding: '10px', textAlign: 'right', color: '#000' }}>R$ {parseFloat(venda.price).toFixed(2)}</td>

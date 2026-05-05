@@ -4,6 +4,7 @@ from datetime import datetime
 class Sale(db.Model):
     __tablename__='sales'
     id = db.Column(db.Integer, primary_key=True)
+    order_number = db.Column(db.String(10), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
     product_name = db.Column(db.String(100), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)

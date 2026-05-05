@@ -2,8 +2,14 @@ from src.Infrastructure.Model.sale import Sale
 from src.Infrastructure.Model.product import Product
 from src.Domain.sale import SaleDomain
 from src.config.data_base import db
+import random
 
 class SaleService:
+
+    @staticmethod
+    def generate_order_code():
+        numero = random.randint(1000, 9999)
+        return f"P-{numero}"
 
     @staticmethod
     def create_venda(user_id, product_id, quantity):
@@ -21,8 +27,11 @@ class SaleService:
             # Calcula o preço total
             total_price = float(product.price) * quantity
             
+            codigo_pedido = SaleService.generate_order_code()
+
             # Cria a venda
             sale = Sale(
+                order_number=codigo_pedido,
                 product_id=product.id,
                 product_name=product.name,
                 quantity=quantity,
@@ -42,6 +51,7 @@ class SaleService:
             # Retorna os dados da venda com o produto e quantidade
             sale_domain = SaleDomain(
                 sale.id,
+                sale.order_number,
                 sale.product_id,
                 sale.product_name,
                 sale.quantity,
@@ -53,7 +63,7 @@ class SaleService:
             
             return {
                 "success": True,
-                "message": f"Venda realizada com sucesso! Produto: {product.name}, Quantidade: {quantity}",
+                "message": f"Venda {codigo_pedido} realizada com sucesso! Produto: {product.name}, Quantidade: {quantity}",
                 "venda": sale_domain
             }
         
@@ -67,6 +77,7 @@ class SaleService:
             sales = db.session.query(Sale).filter(Sale.user_id == user_id).all()
             return [SaleDomain(
                 sale.id,
+                sale.order_number,
                 sale.product_id,
                 sale.product_name,
                 sale.quantity,

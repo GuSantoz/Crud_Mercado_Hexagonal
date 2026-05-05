@@ -1,6 +1,7 @@
 class SaleDomain:
-    def __init__(self, id, product_id, product_name, quantity, price, total_price, user_id, created_at):
+    def __init__(self, id, order_number,product_id, product_name, quantity, price, total_price, user_id, created_at):
         self.id = id
+        self.order_number = order_number
         self.product_id = product_id
         self.product_name = product_name
         self.quantity = quantity
@@ -11,7 +12,7 @@ class SaleDomain:
 
     def to_dict(self):
         return {
-            "id": self.id,
+            "order_number": self.order_number,
             "product_id": self.product_id,
             "product_name": self.product_name,
             "quantity": self.quantity,
