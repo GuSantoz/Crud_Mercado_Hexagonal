@@ -30,15 +30,12 @@ function CadastroUsuario({ onCadastroSuccess }) {
       const dados = await resposta.json();
 
       if (resposta.ok) {
-        // 1. SALVAR IMEDIATAMENTE
         localStorage.setItem('cnpjAtivacao', cnpj);
 
-        // 2. PEQUENA PAUSA para o storage "assentar" antes de abrir o modal
         setTimeout(() => {
           alert(dados.mensagem);
           if (onCadastroSuccess) onCadastroSuccess();
           
-          // Limpa apenas os campos visuais
           setNome('');
           setCnpj('');
           setEmail('');
