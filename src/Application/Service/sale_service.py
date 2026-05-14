@@ -22,6 +22,9 @@ class SaleService:
             if product.quantity < quantity:
                 return {"success": False, "message": f"Quantidade insuficiente! Disponível: {product.quantity}"}
             
+            if product.status == False:
+                return {"success": False, "message": "Produto indisponível!"}
+            
             total_price = float(product.price) * quantity
             
             codigo_pedido = SaleService.generate_order_code()
