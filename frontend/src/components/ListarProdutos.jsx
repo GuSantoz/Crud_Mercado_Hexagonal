@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import EditarProduto from './EditarProduto';
+import { getProductImageUrl } from '../utils/imageUrl';
+import '../App.css';
 
 function ListarProdutos() {
   const [produtos, setProdutos] = useState([]);
@@ -126,7 +128,7 @@ function ListarProdutos() {
                 ✏️
               </button>
               <img 
-                src={produto.image} 
+                src={getProductImageUrl(produto.image)} 
                 alt={produto.name}
                 style={{
                   width: '100%',
@@ -156,32 +158,19 @@ function ListarProdutos() {
       )}
 
       {produtoEditado && (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          backgroundColor: 'rgba(0,0,0,0.65)',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 1000,
-          padding: '20px'
-        }}>
-          <div style={{ width: '100%', maxWidth: '540px', position: 'relative' }}>
+        <div
+          className="modal-overlay modal-overlay--scroll"
+          onClick={() => setProdutoEditado(null)}
+        >
+          <div
+            className="modal-edit-product"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
+              type="button"
+              className="close-modal-btn"
               onClick={() => setProdutoEditado(null)}
-              style={{
-                position: 'absolute',
-                top: '-10px',
-                right: '-10px',
-                background: '#dc3545',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '50%',
-                width: '36px',
-                height: '36px',
-                cursor: 'pointer',
-                fontSize: '18px'
-              }}
+              aria-label="Fechar"
             >
               ✖
             </button>

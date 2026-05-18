@@ -1,6 +1,7 @@
 from flask import request, jsonify, make_response
 from src.Application.Service.product_service import ProductService
 from src.Application.Service.user_service import UserService
+from src.Infrastructure.storage.image_storage import save_product_image
 
 
 class ProductController:
@@ -59,6 +60,24 @@ class ProductController:
                 "produto": productDomain.to_dict()
             }), 201
         )
+
+    @staticmethod
+    def upload_image():
+        token = request.headers.get('Authorization')
+        if not token:
+            return make_response(jsonify({"erro": "Token não fornecido"}), 401)
+
+        token_validation = UserService.validate_token(token)
+        if not token_validation["success"]:
+            return make_response(jsonify({"erro": token_validation["message"]}), 401)
+
+        file = request.files.get('image')
+        image_path, error = save_product_image(file)
+
+        if error:
+            return make_response(jsonify({"erro": error}), 400)
+
+        return make_response(jsonify({"image": image_path}), 200)
     
     @staticmethod
     def update_product():

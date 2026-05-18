@@ -1,8 +1,8 @@
-import os
 from src.Application.Controllers.sale_controller import SaleController
 from src.Application.Controllers.user_controller import UserController
 from src.Application.Controllers.product_controller import ProductController
-from flask import jsonify, make_response
+from flask import jsonify, make_response, send_from_directory
+from src.Infrastructure.storage.image_storage import get_upload_folder
 
 def init_routes(app):    
     @app.route('/api', methods=['GET'])
@@ -38,6 +38,14 @@ def init_routes(app):
     @app.route('/product', methods=['POST'])
     def create_product():
         return ProductController.create_product()
+
+    @app.route('/product/upload', methods=['POST'])
+    def upload_product_image():
+        return ProductController.upload_image()
+
+    @app.route('/uploads/<path:filename>')
+    def serve_product_image(filename):
+        return send_from_directory(get_upload_folder(), filename)
     
     @app.route('/product', methods=['PUT'])
     def update_product():
