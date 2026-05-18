@@ -85,7 +85,7 @@ function ListarProdutos() {
           borderRadius: '4px', 
           textAlign: 'center' 
         }}>
-          <p>Nenhum produto cadastrado ainda.</p>
+          <p style={{ color: '#333', margin: 0 }}>Nenhum produto cadastrado ainda.</p>
         </div>
       ) : (
         <div style={{ 

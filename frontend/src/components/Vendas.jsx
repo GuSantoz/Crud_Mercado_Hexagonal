@@ -134,13 +134,13 @@ function Vendas() {
       </div>
 
       {abaSelecionada === 'realizar' ? (
-        <div style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '5px' }}>
-          <h3>Realizar Venda</h3>
+        <div style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '5px', color: '#333' }}>
+          <h3 style={{ color: '#212529', marginTop: 0 }}>Realizar Venda</h3>
           {erro && <div style={{ color: 'red', marginBottom: '10px' }}>{erro}</div>}
           
           <form onSubmit={realizarVenda}>
             <div style={{ marginBottom: '15px' }}>
-              <label htmlFor="produto" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+              <label htmlFor="produto" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold', color: '#212529' }}>
                 Selecione o Produto:
               </label>
               <select 
@@ -165,7 +165,7 @@ function Vendas() {
             </div>
 
             <div style={{ marginBottom: '15px' }}>
-              <label htmlFor="quantidade" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+              <label htmlFor="quantidade" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold', color: '#212529' }}>
                 Quantidade:
               </label>
               <input 
