@@ -17,12 +17,24 @@ class UserService:
     
     @staticmethod
     def create_user(name, cnpj, email, celular, password, code):
+        usuario_existente = db.session.query(User).filter(User.cnpj == cnpj).first()
+        if usuario_existente:
+            return {"success": False, "message": "Este CNPJ já está cadastrado no sistema."}
+
         password_hash = generate_password_hash(password, method="pbkdf2:sha256", salt_length=16)
         user = User(name=name, cnpj=cnpj, email=email, celular=celular, password=password_hash, code=code)
-        db.session.add(user)
-        db.session.commit()       
         
-        return UserDomain(user.id, user.name, user.cnpj, user.email, user.celular, user.status, user.code)
+        try:
+            db.session.add(user)
+            db.session.commit()       
+            
+            user_domain = UserDomain(user.id, user.name, user.cnpj, user.email, user.celular, user.status, user.code)
+            
+            return {"success": True, "message": "Usuário criado com sucesso.", "user": user_domain}
+            
+        except Exception as e:
+            db.session.rollback()
+            return {"success": False, "message": f"Erro interno ao salvar no banco de dados: {str(e)}"}
     
 
     @staticmethod

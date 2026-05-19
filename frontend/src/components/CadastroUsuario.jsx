@@ -9,6 +9,18 @@ function CadastroUsuario({ onCadastroSuccess }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    const regexCnpj = /(^\d{14}$)|(^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$)/;
+    if (!regexCnpj.test(cnpj)) {
+      alert('Erro: Formato de CNPJ inválido. Digite 14 números (ex: 12345678000199) ou use a máscara padrão.');
+      return;
+    }
+
+    const regexEmail = /^[^\s@]+@[^\s@]+\.(com|br|com\.br)$/i;
+    if (!regexEmail.test(email)) {
+      alert('Erro: E-mail inválido. Certifique-se de usar "@" e terminar com ".com" ou ".br".');
+      return;
+    }
 
     const dadosUsuario = {
       nome: nome,

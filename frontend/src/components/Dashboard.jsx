@@ -57,18 +57,15 @@ function Dashboard() {
     }
   };
 
-  // Métricas calculadas
   const totalItensEstoque = produtos.reduce((acc, p) => acc + (Number(p.quantity) || 0), 0);
   const totalProdutosCadastrados = produtos.length;
   const totalVendasReais = vendas.reduce((acc, v) => acc + (parseFloat(v.total_price) || 0), 0);
   const totalPedidos = vendas.length;
 
-  // Produto com maior estoque
   const produtoMaisEstoque = produtos.length > 0
     ? produtos.reduce((a, b) => (Number(a.quantity) > Number(b.quantity) ? a : b))
     : null;
 
-  // Produto mais vendido (por quantidade)
   const vendasPorProduto = vendas.reduce((acc, v) => {
     acc[v.product_name] = (acc[v.product_name] || 0) + Number(v.quantity);
     return acc;
@@ -79,7 +76,7 @@ function Dashboard() {
     <>
       <div className="db-wrapper">
         <div className="db-header">
-          <h2 className="db-title">📊 Meu <span>Dashboard</span></h2>
+          <h2 className="db-title">📊 <span>Meu Dashboard</span></h2>
           <button className="db-refresh-btn" onClick={buscarDados}>
             🔄 Atualizar
           </button>
