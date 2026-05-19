@@ -7,6 +7,7 @@ import EditarPerfil from './components/EditarPerfil';
 import CadastroProduto from './components/CadastroProduto';
 import ListarProdutos from './components/ListarProdutos';
 import Vendas from './components/Vendas';
+import Dashboard from './components/Dashboard';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -107,6 +108,20 @@ function App() {
             >
               🛒 Vendas
             </button>
+            <button 
+              onClick={() => setDashboardTab('dashboard')}
+              style={{
+                padding: '12px 20px',
+                backgroundColor: dashboardTab === 'dashboard' ? '#007bff' : '#f0f0f0',
+                color: dashboardTab === 'dashboard' ? '#fff' : '#000',
+                border: 'none',
+                borderRadius: '5px 5px 0 0',
+                cursor: 'pointer',
+                fontWeight: 'bold'
+              }}
+            >
+              📊 Visão Geral
+            </button>
           </div>
 
           {dashboardTab === 'perfil' ? (
@@ -117,6 +132,8 @@ function App() {
             <ListarProdutos />
           ) : dashboardTab === 'vendas' ? (
             <Vendas />
+          ) : dashboardTab === 'dashboard' ? (
+            <Dashboard />
           ) : null}
         </div>
       ) : (
